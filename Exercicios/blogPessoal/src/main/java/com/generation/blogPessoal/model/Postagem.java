@@ -1,31 +1,24 @@
 package com.generation.blogPessoal.model;
 
-import java.io.Serializable;
+import java.util.Date;
 import java.time.LocalDateTime;
-import java.util.*;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 import com.fasterxml.jackson.annotation.JsonFormat;
-
-
-import org.hibernate.annotations.UpdateTimestamp;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.sun.istack.NotNull;
+
 
 @Entity
 @Table(name="postagens")
-public class Postagem implements Serializable
+public class Postagem 
  {
 
 	@Id
@@ -38,8 +31,14 @@ public class Postagem implements Serializable
 	@NotNull
 	private String texto;
 	
-	@JsonFormat(pattern = "dd/MM/yyyy")
-	@UpdateTimestamp
+	@Temporal(TemporalType.TIMESTAMP)     
+	private Date dataEnvio = new java.sql.Date(System.currentTimeMillis());
+
+	@ManyToOne
+	@JsonIgnoreProperties("postagem")
+	private Tema tema;
+	
+	@JsonFormat(pattern = "yyyy-mm-dd")
 	@Column(name = "data_de_atualizacao")
 	private LocalDateTime dataDeAtualizacao;
 
@@ -69,6 +68,7 @@ public class Postagem implements Serializable
 	public void setTexto(String texto) {
 		this.texto = texto;
 	}
+	
 
 	public LocalDateTime getDataDeAtualizacao() {
 		return dataDeAtualizacao;
@@ -76,6 +76,14 @@ public class Postagem implements Serializable
 
 	public void setDataDeAtualizacao(LocalDateTime dataDeAtualizacao) {
 		this.dataDeAtualizacao = dataDeAtualizacao;
+	}
+
+	public Tema getTema() {
+		return tema;
+	}
+
+	public void setTema(Tema tema) {
+		this.tema = tema;
 	}
 
 	
