@@ -11,6 +11,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
+import org.hibernate.annotations.CreationTimestamp;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.sun.istack.NotNull;
@@ -29,18 +32,20 @@ public class Postagem
 	private String titulo;
 	
 	@NotNull
+	@Column
+	private int ano;
+	
+	@NotNull
 	private String texto;
 	
-	@Temporal(TemporalType.TIMESTAMP)     
-	private Date dataEnvio = new java.sql.Date(System.currentTimeMillis());
-
 	@ManyToOne
 	@JsonIgnoreProperties("postagem")
 	private Tema tema;
 	
-	@JsonFormat(pattern = "yyyy-mm-dd")
-	@Column(name = "data_de_atualizacao")
-	private LocalDateTime dataDeAtualizacao;
+	@Column(columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+	@Temporal(TemporalType.TIMESTAMP)
+	@CreationTimestamp
+	private Date data;
 
 
 
@@ -69,13 +74,12 @@ public class Postagem
 		this.texto = texto;
 	}
 	
-
-	public LocalDateTime getDataDeAtualizacao() {
-		return dataDeAtualizacao;
+	public Date getData() {
+		return data;
 	}
 
-	public void setDataDeAtualizacao(LocalDateTime dataDeAtualizacao) {
-		this.dataDeAtualizacao = dataDeAtualizacao;
+	public void setData(Date data) {
+		this.data = data;
 	}
 
 	public Tema getTema() {
@@ -85,6 +89,16 @@ public class Postagem
 	public void setTema(Tema tema) {
 		this.tema = tema;
 	}
+
+	public int getAno() {
+		return ano;
+	}
+
+	public void setAno(int ano) {
+		this.ano = ano;
+	}
+	
+	
 
 	
 	
